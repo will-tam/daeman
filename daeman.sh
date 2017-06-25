@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# daeman.sh : daemon manager ou management, as anyone wishes.
+# daeman.sh : daemon manager or management, as anyone wishes.
 # Start or stop some preset services, through Systemd.
 # Renewal of my 2 shell scripts with "dialog" within only 1 with "whiptail".
 # Will_tam - ver 20170525-benri
+# 	     var 20170625-daibubenri
 #
 # Yes, start() and stop() have common points !!!
 
@@ -18,7 +19,8 @@ function helpThisHuman()
 # @Return : none.
 {
     echo -en "\nHelp :\n"
-    echo -en "possible using : daeman.sh [start | stop]\n\n"
+    echo -en "Invoke (start) or exorcise (stop) an Linux daemon, trhough Systemd.\n\n"
+    echo -en "Possible using : daeman.sh [start | stop]\n"
     echo -en "If no arguments, opening of a menu.\n\n"
 }
 
@@ -45,7 +47,7 @@ function menuOfTheDay()
              --fb\
              --yes-button "Invoke a daemon"\
              --no-button "Exorcise a démon"\
-             --yesno "You should prefer"\
+             --yesno "Extra help : calling directely daeman.sh [start | stop]\nFinally, you should should prefer :"\
              10 80\
              3>&1 1>&2 2>&3
     echo $?
@@ -146,7 +148,7 @@ while true;do   # Just do it, eternally ... will be brooken with an exit 0.
     case $args in
         0 | "start") start; exit 0;;
         1 | "stop") stop; exit 0;;
-        "help") helpThisHuman; exit 0;;
+        "-h" | "--help"  | "help") helpThisHuman; exit 0;;
         *) args=$(menuOfTheDay);;
     esac
 done
