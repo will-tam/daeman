@@ -97,10 +97,14 @@ function start()
     
     # Check if something has been chooseen.
     if [[ -n $choices ]]; then
+	echo -en "\n" 3>&1 1>&2 2>&3
         for l in $choices; do
-            echo -en $l "\n\tStarting\n"
+	    echo -en $l"\n\t starting\n" 3>&1 1>&2 2>&3
             systemctl start $l
         done
+	read -s -n 1 -p "All daemons invoked! Press any alphanum keys".
+	echo -en "\n" 3>&1 1>&2 2>&3
+	echo 2
     fi
 }
 
@@ -123,19 +127,23 @@ function stop()
 
     if [[ -z $items ]]; then        # Nothing to do ? So, inform it.
         informThem "No daemon to exorcise !"
-        exit 0
+	return 2
     fi
     
     choices=$(daemonsMenu $items)
     
     # Check if something has been chooseen.
     if [[ -n $choices ]]; then
+	echo -en "\n" 3>&1 1>&2 2>&3
         for l in $choices; do
-            echo -en $l "\n\tStopping\n"
+            echo -en $l"\n\tstopping\n" 3>&1 1>&2 2>&3
             systemctl stop $l
-        echo -en "\tDeactivate\n"
+        echo -en "\tDeactivate\n" 3>&1 1>&2 2>&3
         systemctl disable $l
         done
+	read -s -n 1 -p "All daemons exorcised! Press any alphanum keys".
+	echo -en "\n" 3>&1 1>&2 2>&3
+	echo 2
     fi
 }
 
