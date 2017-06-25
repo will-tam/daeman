@@ -9,7 +9,7 @@
 
 
 CONFFILE=$(dirname "$0")/../etc/startstop.conf      # Where is the config file ?
-nonAuto=$(cat $CONFFILE)        # What inside it ?
+nonAuto=$(cat $CONFFILE 2> /dev/null)        # What inside it ?
 
 
 function helpThisHuman()
