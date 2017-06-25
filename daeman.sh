@@ -33,7 +33,8 @@ function informThem()
     whiptail --clear\
              --title "For your information"\
              --msgbox "$1"\
-             7 30
+             7 30\
+	     3>&1 1>&2 2>&3
 }
 
 function menuOfTheDay()
@@ -47,7 +48,7 @@ function menuOfTheDay()
              --fb\
              --yes-button "Invoke a daemon"\
              --no-button "Exorcise a démon"\
-             --yesno "Extra help : calling directely daeman.sh [start | stop]\nFinally, you should should prefer :"\
+             --yesno "Extra help : calling directely daeman.sh [start | stop]\nFinally, you should should prefer (ESC) :"\
              10 80\
              3>&1 1>&2 2>&3
     echo $?
@@ -89,9 +90,9 @@ function start()
 
     if [[ -z $items ]]; then        # Nothing to do ? So, inform it.
         informThem "No more daemons to invoke !"
-        exit 0
+	return 2
     fi
-    
+        
     choices=$(daemonsMenu $items)
     
     # Check if something has been chooseen.
@@ -138,7 +139,6 @@ function stop()
     fi
 }
 
-
 # main() {
 args=$@    # Maybe, a user wants something.
 
@@ -146,9 +146,10 @@ args=$@    # Maybe, a user wants something.
 
 while true;do   # Just do it, eternally ... will be brooken with an exit 0.
     case $args in
-        0 | "start") start; exit 0;;
-        1 | "stop") stop; exit 0;;
         "-h" | "--help"  | "help") helpThisHuman; exit 0;;
+        0 | "start") args=$(start);;
+        1 | "stop") args=$(stop);;
+	255) exit 0;;
         *) args=$(menuOfTheDay);;
     esac
 done
